@@ -18,7 +18,6 @@ const addDoctor = async (req, res) => {
       address,
     } = req.body;
     const imageFile = req.file;
-
     //checking for all data to doctor
     if (
       !name ||
@@ -82,8 +81,23 @@ const addDoctor = async (req, res) => {
   }
 };
 
+//api for the admin login
 
-//api for the admin login 
+const loginAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (
+      email === process.env.ADMIN_EMAIL ||
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      
+    } else {
+      res.json({ message: "Invalid credentials", success: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong", error });
+  }
+};
 
-
-export { addDoctor };
+export { addDoctor, loginAdmin };
