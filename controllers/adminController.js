@@ -2,6 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
+import jwt from "jsonwebtoken";
 
 // Controller function for adding a doctor
 const addDoctor = async (req, res) => {
@@ -90,7 +91,8 @@ const loginAdmin = async (req, res) => {
       email === process.env.ADMIN_EMAIL ||
       password === process.env.ADMIN_PASSWORD
     ) {
-      
+      const token = jwt.sign(email + password, process.env.JWT_SECRET);
+      res.json({ message: "Login successful", success: true, token });
     } else {
       res.json({ message: "Invalid credentials", success: false });
     }
